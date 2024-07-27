@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, ParseIntPipe, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, ParseFloatPipe, ParseIntPipe, Post, Put } from "@nestjs/common";
 import { Produto } from "../entities/produto.entity";
 import { ProdutoService } from "../services/produto.service";
 import { Transform, TransformFnParams } from "class-transformer";
@@ -25,6 +25,18 @@ export class ProdutoController{
     @HttpCode(HttpStatus.OK)
     findByName(@Param('nome')nome: string): Promise<Produto[]>{
         return this.produtoService.findByName(nome)
+    }
+
+    @Get('/menorPreco/:preco')
+    @HttpCode(HttpStatus.OK)
+    findLessThan(@Param('preco', ParseFloatPipe) preco: number): Promise<Produto[]>{
+        return this.produtoService.findLessThan(preco)
+    }
+
+    @Get('/maiorPreco/:preco')
+    @HttpCode(HttpStatus.OK)
+    findMoreThan(@Param('preco', ParseFloatPipe) preco: number): Promise<Produto[]>{
+        return this.produtoService.findMoreThan(preco)
     }
 
     @Post()
